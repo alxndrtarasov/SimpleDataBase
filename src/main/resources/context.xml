@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean id="mainMenu" class="bdvisualisation.MainMenu">
+		<property name="defDbPath" value="db.txt" />
+		<property name="openner" ref = "openner"></property>
+	</bean>
+	<bean id="worker" class="bd.SimpleBDWorker">
+		 <constructor-arg value="db.txt"/>
+	</bean>
+	<bean id="visualizator" class="bdvisualisation.SelectionListenerBDVisualizator">
+		 <constructor-arg ref="worker"/>
+	</bean>
+	<bean id="openner" class="bdvisualisation.SimpleBDOpenner">
+		<property name="visualizator" ref="visualizator"></property>
+	</bean>
+
+</beans>
