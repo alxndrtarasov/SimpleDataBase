@@ -24,70 +24,79 @@ import objtype.Obj;
 
 public class JButtonTableExample extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	BDWorker worker = new SimpleBDWorker("db.txt");
-	
-  public JButtonTableExample() {
-    super("JButtonTable Example");
-    DefaultTableModel dm = new DefaultTableModel();
-    DefaultTableModel dbm = new DefaultTableModel();
-    Object[] columnTitles = { "id", "name", "date", "description"};
-	List<Obj> allObjects = worker.getAllObjects();
-	System.out.println(worker.getAllObjects());
-	Object[][] rowData = new Object[allObjects.size()][4];
-	for (int i = 0; i < allObjects.size(); i++) {
-		Obj currentObj = allObjects.get(i);
-		rowData[i][0] = currentObj.getId();
-		rowData[i][0] = currentObj.getName();
-		rowData[i][0] = currentObj.getDate();
-		rowData[i][0] = currentObj.getDescription();
+
+	public JButtonTableExample() {
+		super("JButtonTable Example");
+		DefaultTableModel dm = new DefaultTableModel();
+		Object[] columnTitles = { "id", "name", "date", "description" };
+		List<Obj> allObjects = worker.getAllObjects();
+		System.out.println(worker.getAllObjects());
+		Object[][] rowData = new Object[allObjects.size()][4];
+		for (int i = 0; i < allObjects.size(); i++) {
+			Obj currentObj = allObjects.get(i);
+			rowData[i][0] = currentObj.getId();
+			rowData[i][0] = currentObj.getName();
+			rowData[i][0] = currentObj.getDate();
+			rowData[i][0] = currentObj.getDescription();
+		}
+		dm.setDataVector(rowData, columnTitles);
+
+		JTable table = new JTable(dm);
+		table.getColumn("Button").setCellRenderer(new ButtonRenderer());
+		table.getColumn("Button").setCellEditor(new ButtonEditor(new JCheckBox()));
+		table.getComponentAt(1, 4);
+		JScrollPane scroll = new JScrollPane(table);
+		getContentPane().add(scroll);
+		setSize(400, 100);
+		setVisible(true);
+		table.setCellSelectionEnabled(false);
 	}
-    dm.setDataVector(rowData, columnTitles);
 
-    JTable table = new JTable(dm);
-    table.getColumn("Button").setCellRenderer(new ButtonRenderer());
-    table.getColumn("Button").setCellEditor(
-        new ButtonEditor(new JCheckBox()));
-    table.getComponentAt(1, 4);
-    JScrollPane scroll = new JScrollPane(table);
-    getContentPane().add(scroll);
-    setSize(400, 100);
-    setVisible(true);
-    table.setCellSelectionEnabled(false);
-  }
+	public static void main(String[] args) {
 
-  public static void main(String[] args) {
-  
-   
-    JButtonTableExample frame = new JButtonTableExample();
-    frame.addWindowListener(new WindowAdapter() {
-      public void windowClosing(WindowEvent e) {
-        System.exit(0);
-      }
-    });
-  }
+		JButtonTableExample frame = new JButtonTableExample();
+		frame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				System.exit(0);
+			}
+		});
+	}
 }
+
 /**
  * @version 1.0 11/09/98
  */
 
 class ButtonRenderer extends JButton implements TableCellRenderer {
 
-  public ButtonRenderer() {
-    setOpaque(true);
-  }
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-  public Component getTableCellRendererComponent(JTable table, Object value,
-      boolean isSelected, boolean hasFocus, int row, int column) {
-    if (isSelected) {
-      setForeground(table.getSelectionForeground());
-      setBackground(table.getSelectionBackground());
-    } else {
-      setForeground(table.getForeground());
-      setBackground(UIManager.getColor("Button.background"));
-    }
-    setText((value == null) ? "" : value.toString());
-    return this;
-  }
+	public ButtonRenderer() {
+		setOpaque(true);
+	}
+
+	@Override
+	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+			int row, int column) {
+		if (isSelected) {
+			setForeground(table.getSelectionForeground());
+			setBackground(table.getSelectionBackground());
+		} else {
+			setForeground(table.getForeground());
+			setBackground(UIManager.getColor("Button.background"));
+		}
+		setText((value == null) ? "" : value.toString());
+		return this;
+	}
 }
 
 /**
@@ -95,55 +104,64 @@ class ButtonRenderer extends JButton implements TableCellRenderer {
  */
 
 class ButtonEditor extends DefaultCellEditor {
-  protected JButton button;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-  private String label;
+	protected JButton button;
 
-  private boolean isPushed;
+	private String label;
 
-  public ButtonEditor(JCheckBox checkBox) {
-    super(checkBox);
-    button = new JButton();
-    button.setOpaque(true);
-    button.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        fireEditingStopped();
-      }
-    });
-  }
+	private boolean isPushed;
 
-  public Component getTableCellEditorComponent(JTable table, Object value,
-      boolean isSelected, int row, int column) {
-    if (isSelected) {
-      button.setForeground(table.getSelectionForeground());
-      button.setBackground(table.getSelectionBackground());
-    } else {
-      button.setForeground(table.getForeground());
-      button.setBackground(table.getBackground());
-    }
-    label = (value == null) ? "" : value.toString();
-    button.setText(label);
-    isPushed = true;
-    return button;
-  }
+	public ButtonEditor(JCheckBox checkBox) {
+		super(checkBox);
+		button = new JButton();
+		button.setOpaque(true);
+		button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				fireEditingStopped();
+			}
+		});
+	}
 
-  public Object getCellEditorValue() {
-    if (isPushed) {
-      // 
-      // 
-      JOptionPane.showMessageDialog(button, label + ": Ouch!");
-      // System.out.println(label + ": Ouch!");
-    }
-    isPushed = false;
-    return new String(label);
-  }
+	@Override
+	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+		if (isSelected) {
+			button.setForeground(table.getSelectionForeground());
+			button.setBackground(table.getSelectionBackground());
+		} else {
+			button.setForeground(table.getForeground());
+			button.setBackground(table.getBackground());
+		}
+		label = (value == null) ? "" : value.toString();
+		button.setText(label);
+		isPushed = true;
+		return button;
+	}
 
-  public boolean stopCellEditing() {
-    isPushed = false;
-    return super.stopCellEditing();
-  }
+	@Override
+	public Object getCellEditorValue() {
+		if (isPushed) {
+			//
+			//
+			JOptionPane.showMessageDialog(button, label + ": Ouch!");
+			// System.out.println(label + ": Ouch!");
+		}
+		isPushed = false;
+		return new String(label);
+	}
 
-  protected void fireEditingStopped() {
-    super.fireEditingStopped();
-  }
+	@Override
+	public boolean stopCellEditing() {
+		isPushed = false;
+		return super.stopCellEditing();
+	}
+
+	@Override
+	protected void fireEditingStopped() {
+		super.fireEditingStopped();
+	}
 }

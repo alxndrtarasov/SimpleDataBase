@@ -1,19 +1,11 @@
 package objtype;
 
-public class IdGenerator {
-	private int currentId;
+public class IdGenerator implements Generator {
 
-	private IdGenerator() {
-		currentId = 1;
+	@Override
+	public int getNext() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
-	private static IdGenerator generator = new IdGenerator();
-
-	void increaseGeneratorBy(int plus) {
-		currentId += plus;
-	}
-
-	public static IdGenerator getInstance() {
-		return generator;
-	}
 }

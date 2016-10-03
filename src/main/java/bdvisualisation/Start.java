@@ -4,8 +4,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class Start {
+	@SuppressWarnings({ "unused", "resource" })
 	public static void main(String[] args) {
 		ApplicationContext context = new ClassPathXmlApplicationContext("context.xml");
-		MainMenu t1000 = (MainMenu) context.getBean("mainMenu");
+		MainMenu mainMenu = (MainMenu) context.getBean("mainMenu");
 	}
 }

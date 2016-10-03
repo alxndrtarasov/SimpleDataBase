@@ -1,9 +1,11 @@
 package bd;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,6 +18,7 @@ public class SimpleBDWorker implements BDWorker {
 
 	private String fileName;
 	private List<Obj> allObjects;
+	private int lastId;
 
 	@Override
 	public String getFileName() {
@@ -28,17 +31,6 @@ public class SimpleBDWorker implements BDWorker {
 
 	public SimpleBDWorker(String fileName) {
 		this.fileName = fileName;
-	}
-
-	@Override
-	public int getObjectsCount() {
-		if(allObjects==null)
-		return 0;
-		else return allObjects.size();
-	}
-
-	@Override
-	public List<Obj> getAllObjects() {
 		allObjects = new ArrayList<>();
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(new File(fileName)));
@@ -56,13 +48,32 @@ public class SimpleBDWorker implements BDWorker {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		lastId = allObjects.isEmpty() ? 0 : allObjects.get(allObjects.size() - 1).getId();
+	}
+
+	@Override
+	public int getObjectsCount() {
+		if (allObjects == null)
+			return 0;
+		else
+			return allObjects.size();
+	}
+
+	@Override
+	public List<Obj> getAllObjects() {
 		return allObjects;
 	}
 
 	@Override
 	public void add(Obj o) {
-		// TODO Auto-generated method stub
-
+		try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter(new File(fileName)));
+			writer.write(o.getId() + ";" + o.getName() + ";" + o.getDate() + ";" + o.getDescription() + "\n");
+			writer.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -99,6 +110,11 @@ public class SimpleBDWorker implements BDWorker {
 	public void importTo(String fileName) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public int getLastId() {
+		return lastId;
 	}
 
 }

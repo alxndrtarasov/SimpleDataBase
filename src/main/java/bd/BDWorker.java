@@ -25,4 +25,6 @@ public interface BDWorker {
 	public abstract void importTo(String fileName);
 
 	public String getFileName();
+
+	public int getLastId();
 }

@@ -15,6 +15,14 @@ public class SelectionListenerBDVisualizator implements BDVisualizator {
 
 	BDWorker worker;
 
+	public BDWorker getWorker() {
+		return worker;
+	}
+
+	public void setWorker(BDWorker worker) {
+		this.worker = worker;
+	}
+
 	SelectionListenerBDVisualizator(BDWorker worker) {
 		this.worker = worker;
 	}

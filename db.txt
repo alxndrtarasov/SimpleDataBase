@@ -1,10 +1,1 @@
-1;vasya;02.10.1996;kek;
-3;sanya;1337;wah;
-1;vasya;02.10.1996;kek;
-3;sanya;1337;wah;
-1;vasya;02.10.1996;kek;
-3;sanya;1337;wah;
-1;vasya;02.10.1996;kek;
-3;sanya;1337;wah;
-1;vasya;02.10.1996;kek;
-3;sanya;1337;wah;
+2;b;Sun Oct 16 00:00:00 MSK 2016;Vegetable
