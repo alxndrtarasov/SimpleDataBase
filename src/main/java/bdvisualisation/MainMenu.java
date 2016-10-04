@@ -46,7 +46,8 @@ public class MainMenu extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				openner.open().setVisible(true);
+				JFrame baseFrame = openner.open();
+				baseFrame.setVisible(true);
 			}
 
 		});

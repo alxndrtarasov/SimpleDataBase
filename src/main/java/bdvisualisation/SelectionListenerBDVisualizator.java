@@ -1,5 +1,6 @@
 package bdvisualisation;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.swing.JScrollPane;
@@ -15,6 +16,7 @@ public class SelectionListenerBDVisualizator implements BDVisualizator {
 
 	BDWorker worker;
 
+	@Override
 	public BDWorker getWorker() {
 		return worker;
 	}
@@ -33,12 +35,13 @@ public class SelectionListenerBDVisualizator implements BDVisualizator {
 		Object[] columnTitles = { "id", "name", "date", "description" };
 		List<Obj> allObjects = worker.getAllObjects();
 		System.out.println(allObjects);
+		SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 		Object[][] rowData = new Object[allObjects.size()][4];
 		for (int i = 0; i < allObjects.size(); i++) {
 			Obj currentObj = allObjects.get(i);
 			rowData[i][0] = currentObj.getId();
 			rowData[i][1] = currentObj.getName();
-			rowData[i][2] = currentObj.getDate();
+			rowData[i][2] = df.format(currentObj.getDate());
 			rowData[i][3] = currentObj.getDescription();
 		}
 		table = new JTable(rowData, columnTitles);

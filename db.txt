@@ -1,1 +1,23 @@
-2;b;Sun Oct 16 00:00:00 MSK 2016;Vegetable
+1;a;02.10.2016;Fruit
+2;b;01.10.2016;Vegetable
+3;c;13.10.2016;Fruit
+4;a;05.10.2016;Fruit
+5;a;05.10.2016;Fruit
+6;ada;13.10.2016;Fruit
+7;ad;06.10.2016;Fruit
+8;ad;05.10.2016;Fruit
+9;da;07.10.2016;Fruit
+10;aw;05.10.2016;Fruit
+11;aw;05.10.2016;Fruit
+12;daw;05.10.2016;Fruit
+13;da;05.10.2016;Fruit
+14;aw;05.10.2016;Fruit
+15;a;06.10.2016;Fruit
+16;ad;05.10.2016;Fruit
+17;a;05.10.2016;Fruit
+18;a;06.10.2016;Fruit
+19;a;05.10.2016;Fruit
+20;a;05.10.2016;Fruit
+21;a;06.10.2016;Fruit
+22;a;05.10.2016;Fruit
+23;a;06.10.2016;Fruit

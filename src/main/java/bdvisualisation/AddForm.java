@@ -3,6 +3,8 @@ package bdvisualisation;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -40,8 +42,14 @@ public class AddForm extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				worker.add(new Obj(worker.getLastId() + 1, name.getText(), date.getDate(),
-						description.getSelectedItem().toString()));
+				SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+				try {
+					worker.add(new Obj(worker.getLastId() + 1, name.getText(), df.parse(df.format(date.getDate())),
+							description.getSelectedItem().toString()));
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				name.setText("");
 			}
 		});

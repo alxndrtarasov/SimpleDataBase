@@ -8,9 +8,12 @@
 	</bean>
 	<bean id="worker" class="bd.SimpleBDWorker">
 		 <constructor-arg value="db.txt"/>
+		 <property name="adder" ref = "adder" />
 	</bean>
 	<bean id="visualizator" class="bdvisualisation.SelectionListenerBDVisualizator">
 		 <constructor-arg ref="worker"/>
+	</bean>
+	<bean id="adder" class="bd.add.SimpleAdder">
 	</bean>
 	<bean id="openner" class="bdvisualisation.SimpleBDOpenner">
 		<property name="visualizator" ref="visualizator"></property>

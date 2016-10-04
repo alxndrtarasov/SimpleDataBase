@@ -1,17 +1,21 @@
 package bd;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
+import bd.add.Adder;
+import bd.backup.Backuper;
+import bd.change.Changer;
+import bd.delete.Deleter;
+import bd.find.Finder;
+import bd.imp.Importer;
 import objtype.Obj;
 
 public class SimpleBDWorker implements BDWorker {
@@ -19,6 +23,52 @@ public class SimpleBDWorker implements BDWorker {
 	private String fileName;
 	private List<Obj> allObjects;
 	private int lastId;
+	private Adder adder;
+	private Deleter deleter;
+	private Changer changer;
+	private Finder finder;
+	private Backuper backuper;
+	private Importer importer;
+
+	public Deleter getDeleter() {
+		return deleter;
+	}
+
+	public void setDeleter(Deleter deleter) {
+		this.deleter = deleter;
+	}
+
+	public Changer getChanger() {
+		return changer;
+	}
+
+	public void setChanger(Changer changer) {
+		this.changer = changer;
+	}
+
+	public Finder getFinder() {
+		return finder;
+	}
+
+	public void setFinder(Finder finder) {
+		this.finder = finder;
+	}
+
+	public Backuper getBackuper() {
+		return backuper;
+	}
+
+	public void setBackuper(Backuper backuper) {
+		this.backuper = backuper;
+	}
+
+	public Importer getImporter() {
+		return importer;
+	}
+
+	public void setImporter(Importer importer) {
+		this.importer = importer;
+	}
 
 	@Override
 	public String getFileName() {
@@ -31,24 +81,7 @@ public class SimpleBDWorker implements BDWorker {
 
 	public SimpleBDWorker(String fileName) {
 		this.fileName = fileName;
-		allObjects = new ArrayList<>();
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(new File(fileName)));
-			String line;
-			while ((line = reader.readLine()) != null) {
-				String[] inlineData = line.split(";");
-				Obj o = new Obj(Integer.parseInt(inlineData[0]), inlineData[1], new Date(), inlineData[3]);
-				allObjects.add(o);
-			}
-			reader.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		lastId = allObjects.isEmpty() ? 0 : allObjects.get(allObjects.size() - 1).getId();
+
 	}
 
 	@Override
@@ -61,60 +94,90 @@ public class SimpleBDWorker implements BDWorker {
 
 	@Override
 	public List<Obj> getAllObjects() {
+		allObjects = new ArrayList<>();
+		SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(new File(fileName)));
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] inlineData = line.split(";");
+				Obj o = new Obj(Integer.parseInt(inlineData[0]), inlineData[1], df.parse(inlineData[2]), inlineData[3]);
+				allObjects.add(o);
+			}
+			reader.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		lastId = allObjects.isEmpty() ? 0 : allObjects.get(allObjects.size() - 1).getId();
 		return allObjects;
 	}
 
 	@Override
 	public void add(Obj o) {
-		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter(new File(fileName)));
-			writer.write(o.getId() + ";" + o.getName() + ";" + o.getDate() + ";" + o.getDescription() + "\n");
-			writer.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public Collection<Obj> delete(String fieldName, String fieldValue) {
-		// TODO Auto-generated method stub
-		return null;
+		adder.add(o, fileName);
 	}
 
 	@Override
 	public Obj deleteById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return deleter.deleteById(id, fileName);
 	}
 
 	@Override
 	public void change(int id, String fieldName, String fieldValue) {
-		// TODO Auto-generated method stub
-
+		changer.change(id, fieldName, fieldValue, fileName);
 	}
 
 	@Override
 	public void backup(String fileName) {
-		// TODO Auto-generated method stub
-
+		backuper.backup(fileName, this.fileName);
 	}
 
 	@Override
 	public void reestablishFrom(String fileName) {
-		// TODO Auto-generated method stub
-
+		backuper.reestablishFrom(fileName, this.fileName);
 	}
 
 	@Override
 	public void importTo(String fileName) {
-		// TODO Auto-generated method stub
-
+		importer.importTo(fileName, this.fileName);
 	}
 
 	@Override
 	public int getLastId() {
 		return lastId;
+	}
+
+	public Adder getAdder() {
+		return adder;
+	}
+
+	public void setAdder(Adder adder) {
+		this.adder = adder;
+	}
+
+	@Override
+	public List<Obj> delete(String fieldName, String fieldValue) {
+		return deleter.delete(fieldName, fieldValue, fileName);
+	}
+
+	@Override
+	public Obj findById(int id) {
+		return finder.findById(id, fileName);
+	}
+
+	@Override
+	public List<Obj> find(String fieldName, String field) {
+		return finder.find(fieldName, field, fileName);
 	}
 
 }

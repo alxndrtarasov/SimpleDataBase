@@ -8,10 +8,12 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 public class SimpleBDOpenner implements BDOpenner {
 
-	BDVisualizator visualizator;
+	private BDVisualizator visualizator;
+	JScrollPane table;
 
 	public BDVisualizator getVisualizator() {
 		return visualizator;
@@ -25,7 +27,8 @@ public class SimpleBDOpenner implements BDOpenner {
 	public JFrame open() {
 		JFrame result = new JFrame();
 		result.setLayout(new BorderLayout());
-		result.add(visualizator.getTable(), BorderLayout.CENTER);
+		table = visualizator.getTable();
+		result.add(table, BorderLayout.CENTER);
 		JButton add = new JButton("Add Obj");
 		JPanel buttons = new JPanel(new GridLayout(2, 1));
 		add.addActionListener(new ActionListener() {
@@ -36,13 +39,33 @@ public class SimpleBDOpenner implements BDOpenner {
 			}
 		});
 
-		JButton refresh = new JButton("Refresh");
-		refresh.addActionListener(new ActionListener() {
-
+		JButton delete = new JButton("Delete Obj(s)");
+		delete.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				result.remove(0);
-				result.add(visualizator.getTable(), BorderLayout.CENTER);
+				new DelForm(visualizator.getWorker());
+			}
+		});
+		buttons.add(delete);
+
+		JButton find = new JButton("Delete Obj(s)");
+		find.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new DelForm(visualizator.getWorker());
+			}
+		});
+		buttons.add(find);
+
+		JButton refresh = new JButton("Refresh");
+		refresh.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				result.remove(table);
+				table = visualizator.getTable();
+				result.add(table, BorderLayout.CENTER);
+				result.revalidate();
+				result.repaint();
 			}
 		});
 

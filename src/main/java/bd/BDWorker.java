@@ -1,6 +1,5 @@
 package bd;
 
-import java.util.Collection;
 import java.util.List;
 
 import objtype.Obj;
@@ -10,19 +9,23 @@ public interface BDWorker {
 
 	public List<Obj> getAllObjects();
 
-	public abstract void add(Obj o);
+	public void add(Obj o);
 
-	public abstract Collection<Obj> delete(String fieldName, String fieldValue);
+	public List<Obj> delete(String fieldName, String fieldValue);
 
-	public abstract Obj deleteById(int id);
+	public Obj deleteById(int id);
 
-	public abstract void change(int id, String fieldName, String fieldValue);
+	public Obj findById(int id);
 
-	public abstract void backup(String fileName);
+	public List<Obj> find(String fieldName, String field);
 
-	public abstract void reestablishFrom(String fileName);
+	public void change(int id, String fieldName, String fieldValue);
 
-	public abstract void importTo(String fileName);
+	public void backup(String fileName);
+
+	public void reestablishFrom(String fileName);
+
+	public void importTo(String fileName);
 
 	public String getFileName();
 
