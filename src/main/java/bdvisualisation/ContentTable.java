@@ -23,7 +23,7 @@ public class ContentTable extends JPanel {
 		this.table = table;
 	}
 
-	ContentTable(List<Obj> objs) {
+	public ContentTable(List<Obj> objs) {
 		Object[] columnTitles = { "id", "name", "date", "description" };
 		System.out.println(objs);
 		SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");

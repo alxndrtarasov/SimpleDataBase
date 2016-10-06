@@ -1,4 +1,4 @@
-package bdvisualisation;
+package bdvisualisation.forms;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -13,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import bd.BDWorker;
+import bdvisualisation.ContentTable;
+import javassist.NotFoundException;
 import objtype.Obj;
 
 public class FindForm extends JFrame {
@@ -21,7 +23,7 @@ public class FindForm extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	FindForm(BDWorker worker) {
+	public FindForm(BDWorker worker) {
 		setLayout(new GridLayout(3, 2));
 		JFrame findResult = new JFrame("Results of search");
 		JLabel inputLabel = new JLabel("Input:");
@@ -43,11 +45,21 @@ public class FindForm extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (fieldChooser.getSelectedItem().equals("id")) {
 					List<Obj> objs = new ArrayList<>();
-					objs.add(worker.findById(Integer.parseInt(input.getText())));
+					try {
+						objs.add(worker.findById(Integer.parseInt(input.getText())));
+					} catch (NumberFormatException e1) {
+						input.setText("Wrong id format");
+					} catch (NotFoundException e1) {
+						input.setText("Not found");
+					}
 					findResult.add(new ContentTable(objs));
 				} else {
-					findResult.add(
-							new ContentTable(worker.find((String) fieldChooser.getSelectedItem(), input.getText())));
+					try {
+						findResult.add(new ContentTable(
+								worker.find((String) fieldChooser.getSelectedItem(), input.getText())));
+					} catch (NotFoundException e1) {
+						input.setText("Not found");
+					}
 				}
 				findResult.setVisible(true);
 			}

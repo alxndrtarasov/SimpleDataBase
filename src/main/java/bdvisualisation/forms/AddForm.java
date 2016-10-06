@@ -1,4 +1,4 @@
-package bdvisualisation;
+package bdvisualisation.forms;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -23,7 +23,7 @@ public class AddForm extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	AddForm(BDWorker worker) {
+	public AddForm(BDWorker worker) {
 		setLayout(new GridLayout(4, 2));
 
 		JLabel nameLabel = new JLabel("name:");

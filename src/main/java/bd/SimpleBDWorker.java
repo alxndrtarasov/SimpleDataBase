@@ -16,6 +16,7 @@ import bd.change.Changer;
 import bd.delete.Deleter;
 import bd.find.Finder;
 import bd.imp.Importer;
+import javassist.NotFoundException;
 import objtype.Obj;
 
 public class SimpleBDWorker implements BDWorker {
@@ -171,12 +172,12 @@ public class SimpleBDWorker implements BDWorker {
 	}
 
 	@Override
-	public Obj findById(int id) {
+	public Obj findById(int id) throws NotFoundException {
 		return finder.findById(id, fileName);
 	}
 
 	@Override
-	public List<Obj> find(String fieldName, String field) {
+	public List<Obj> find(String fieldName, String field) throws NotFoundException {
 		return finder.find(fieldName, field, fileName);
 	}
 

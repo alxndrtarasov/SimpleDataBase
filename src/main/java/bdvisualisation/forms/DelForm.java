@@ -1,4 +1,4 @@
-package bdvisualisation;
+package bdvisualisation.forms;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -18,7 +18,7 @@ public class DelForm extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	DelForm(BDWorker worker) {
+	public DelForm(BDWorker worker) {
 		setLayout(new GridLayout(3, 2));
 
 		JLabel inputLabel = new JLabel("Input:");

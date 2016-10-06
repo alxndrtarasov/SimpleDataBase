@@ -2,6 +2,7 @@ package bd;
 
 import java.util.List;
 
+import javassist.NotFoundException;
 import objtype.Obj;
 
 public interface BDWorker {
@@ -15,9 +16,9 @@ public interface BDWorker {
 
 	public Obj deleteById(int id);
 
-	public Obj findById(int id);
+	public Obj findById(int id) throws NotFoundException;
 
-	public List<Obj> find(String fieldName, String field);
+	public List<Obj> find(String fieldName, String field) throws NotFoundException;
 
 	public void change(int id, String fieldName, String fieldValue);
 
