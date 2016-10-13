@@ -19,7 +19,6 @@ import bd.change.Changer;
 import bd.delete.Deleter;
 import bd.find.Finder;
 import bd.imp.Importer;
-import javassist.NotFoundException;
 import objtype.Obj;
 
 public class SimpleBDWorker implements BDWorker {
@@ -44,28 +43,45 @@ public class SimpleBDWorker implements BDWorker {
 	public RandomAccessFile db3;
 	public RandomAccessFile dbId;
 	public SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+	public int hashSize = 100;
 
 	public void rewriteHash() {
 		try {
-			FileWriter idWriter = new FileWriter("ids_" + fileName);
+			File fileId = new File(fileName + "_ids");
+			if (!fileId.exists()) {
+				fileId.createNewFile();
+			}
+			FileWriter idWriter = new FileWriter(fileId);
 			for (String currentKey : idHash.keySet()) {
 				idWriter.write(currentKey + ">>" + idHash.get(currentKey) + "\n");
 			}
 			idWriter.close();
 
-			FileWriter writer1 = new FileWriter("1" + fileName);
+			File file1 = new File(fileName + "1");
+			if (!file1.exists()) {
+				file1.createNewFile();
+			}
+			FileWriter writer1 = new FileWriter(file1);
 			for (String currentKey : hash1.keySet()) {
 				writer1.write(currentKey + ">>" + hash1.get(currentKey) + "\n");
 			}
 			writer1.close();
 
-			FileWriter writer2 = new FileWriter("2" + fileName);
+			File file2 = new File(fileName + "2");
+			if (!file2.exists()) {
+				file2.createNewFile();
+			}
+			FileWriter writer2 = new FileWriter(file2);
 			for (String currentKey : hash2.keySet()) {
 				writer2.write(currentKey + ">>" + hash2.get(currentKey) + "\n");
 			}
 			writer2.close();
 
-			FileWriter writer3 = new FileWriter("3" + fileName);
+			File file3 = new File(fileName + "3");
+			if (!file3.exists()) {
+				file3.createNewFile();
+			}
+			FileWriter writer3 = new FileWriter(file3);
 			for (String currentKey : hash3.keySet()) {
 				writer3.write(currentKey + ">>" + hash3.get(currentKey) + "\n");
 			}
@@ -153,12 +169,11 @@ public class SimpleBDWorker implements BDWorker {
 			// fw1.close();
 			// fw2.close();
 			// fw3.close();
-			db = new RandomAccessFile(fileName, "rw");
-			dbId = new RandomAccessFile("ids_" + fileName, "rw");
-			db1 = new RandomAccessFile("1" + fileName, "rw");
-			db2 = new RandomAccessFile("2" + fileName, "rw");
-			db3 = new RandomAccessFile("3" + fileName, "rw");
-			BufferedReader idReader = new BufferedReader(new FileReader("ids_" + fileName));
+			File fileId = new File(fileName + "_ids");
+			if (!fileId.exists()) {
+				fileId.createNewFile();
+			}
+			BufferedReader idReader = new BufferedReader(new FileReader(fileId));
 			String line = "";
 			while ((line = idReader.readLine()) != null) {
 				if (line.split(">>").length > 1) {
@@ -167,7 +182,11 @@ public class SimpleBDWorker implements BDWorker {
 			}
 			idReader.close();
 
-			BufferedReader firstReader = new BufferedReader(new FileReader("1" + fileName));
+			File file1 = new File(fileName + "1");
+			if (!file1.exists()) {
+				file1.createNewFile();
+			}
+			BufferedReader firstReader = new BufferedReader(new FileReader(file1));
 			while ((line = firstReader.readLine()) != null) {
 				if (line.split(">>").length > 1) {
 					hash1.put(line.split(">>")[0], line.split(">>")[1]);
@@ -175,7 +194,11 @@ public class SimpleBDWorker implements BDWorker {
 			}
 			firstReader.close();
 
-			BufferedReader secondReader = new BufferedReader(new FileReader("2" + fileName));
+			File file2 = new File(fileName + "2");
+			if (!file2.exists()) {
+				file2.createNewFile();
+			}
+			BufferedReader secondReader = new BufferedReader(new FileReader(file2));
 			while ((line = secondReader.readLine()) != null) {
 				if (line.split(">>").length > 1) {
 					hash2.put(line.split(">>")[0], line.split(">>")[1]);
@@ -183,13 +206,22 @@ public class SimpleBDWorker implements BDWorker {
 			}
 			secondReader.close();
 
-			BufferedReader thirdReader = new BufferedReader(new FileReader("3" + fileName));
+			File file3 = new File(fileName + "3");
+			if (!file3.exists()) {
+				file3.createNewFile();
+			}
+			BufferedReader thirdReader = new BufferedReader(new FileReader(file3));
 			while ((line = thirdReader.readLine()) != null) {
 				if (line.split(">>").length > 1) {
 					hash3.put(line.split(">>")[0], line.split(">>")[1]);
 				}
 			}
 			thirdReader.close();
+			db = new RandomAccessFile(fileName, "rw");
+			dbId = new RandomAccessFile(fileId, "rw");
+			db1 = new RandomAccessFile(file1, "rw");
+			db2 = new RandomAccessFile(file2, "rw");
+			db3 = new RandomAccessFile(file3, "rw");
 		} catch (FileNotFoundException e) {
 			System.out.println("No such file");
 			e.printStackTrace();
@@ -304,12 +336,12 @@ public class SimpleBDWorker implements BDWorker {
 	}
 
 	@Override
-	public Obj findById(int id) throws NotFoundException {
+	public Obj findById(int id) {
 		return finder.findById(id, fileName);
 	}
 
 	@Override
-	public List<Obj> find(String fieldName, String field) throws NotFoundException {
+	public List<Obj> find(String fieldName, String field) {
 		return finder.find(fieldName, field, fileName);
 	}
 

@@ -3,12 +3,12 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 	<bean id="mainMenu" class="bdvisualisation.MainMenu">
-		<property name="defDbPath" value="db.txt" />
+		<property name="defDbPath" value="db" />
 		<property name="hashSize" value="100" />
 		<property name="openner" ref="openner"></property>
 	</bean>
 	<bean id="worker" class="bd.SimpleBDWorker">
-		<constructor-arg value="db.txt" />
+		<constructor-arg value="db" />
 		<property name="adder" ref="adder" />
 		<property name="backuper" ref="backuper" />
 		<property name="deleter" ref="deleter" />

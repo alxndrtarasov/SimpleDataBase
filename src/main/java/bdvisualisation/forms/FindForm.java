@@ -14,7 +14,6 @@ import javax.swing.JTextField;
 
 import bd.BDWorker;
 import bdvisualisation.ContentTable;
-import javassist.NotFoundException;
 import objtype.Obj;
 
 public class FindForm extends JFrame {
@@ -49,17 +48,11 @@ public class FindForm extends JFrame {
 						objs.add(worker.findById(Integer.parseInt(input.getText())));
 					} catch (NumberFormatException e1) {
 						input.setText("Wrong id format");
-					} catch (NotFoundException e1) {
-						input.setText("Not found");
 					}
 					findResult.add(new ContentTable(objs));
 				} else {
-					try {
-						findResult.add(new ContentTable(
-								worker.find((String) fieldChooser.getSelectedItem(), input.getText())));
-					} catch (NotFoundException e1) {
-						input.setText("Not found");
-					}
+					findResult.add(
+							new ContentTable(worker.find((String) fieldChooser.getSelectedItem(), input.getText())));
 				}
 				findResult.setVisible(true);
 			}

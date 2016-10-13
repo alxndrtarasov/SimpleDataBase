@@ -40,8 +40,9 @@ public class DelForm extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (fieldChooser.getSelectedItem().equals("id")) {
 					worker.deleteById(Integer.parseInt(input.getText()));
-				} else
+				} else {
 					worker.delete((String) fieldChooser.getSelectedItem(), input.getText());
+				}
 			}
 		});
 

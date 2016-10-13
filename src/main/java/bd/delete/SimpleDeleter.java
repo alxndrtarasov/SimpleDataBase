@@ -3,6 +3,7 @@ package bd.delete;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -23,8 +24,43 @@ public class SimpleDeleter implements Deleter {
 
 	@Override
 	public List<Obj> delete(String fieldName, String fieldValue, String fileName) {
-		// TODO Auto-generated method stub
-		return null;
+		System.out.println("Massive del was started");
+		List<Obj> result = new ArrayList<>();
+		HashMap<String, String> hash = null;
+		String val;
+		switch (fieldName) {
+		case "name":
+			hash = ((SimpleBDWorker) worker).getHash1();
+			break;
+		case "date":
+			hash = ((SimpleBDWorker) worker).getHash2();
+			break;
+		case "description":
+			hash = ((SimpleBDWorker) worker).getHash3();
+			break;
+		}
+		val = hash.get("" + Math.abs(fieldValue.hashCode() % 100)/* hashSize */);
+		for (String each : val.split(";")) {
+			Obj suspect = worker.findById(Integer.parseInt(each));
+			switch (fieldName) {
+			case "name":
+				if (suspect.getName().equals(fieldValue)) {
+					result.add(deleteById(Integer.parseInt(suspect.getId()), fileName));
+				}
+				break;
+			case "date":
+				if (((SimpleBDWorker) worker).df.format(suspect.getDate()).equals(fieldValue)) {
+					result.add(deleteById(Integer.parseInt(suspect.getId()), fileName));
+				}
+				break;
+			case "description":
+				if (suspect.getDescription().equals(fieldValue)) {
+					result.add(deleteById(Integer.parseInt(suspect.getId()), fileName));
+				}
+				break;
+			}
+		}
+		return result;
 	}
 
 	@Override

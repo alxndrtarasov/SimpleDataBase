@@ -15,7 +15,6 @@ import javax.swing.JTextField;
 import com.toedter.calendar.JDateChooser;
 
 import bd.BDWorker;
-import javassist.NotFoundException;
 import objtype.Obj;
 
 public class ChangeForm extends JFrame {
@@ -83,8 +82,6 @@ public class ChangeForm extends JFrame {
 					description.setSelectedItem(currentObj.getDescription());
 				} catch (NumberFormatException e1) {
 					id.setText("Wrong id formad");
-				} catch (NotFoundException e1) {
-					id.setText("Id not found");
 				}
 
 			}
@@ -107,6 +104,7 @@ public class ChangeForm extends JFrame {
 		add(namePanel);
 		add(datePanel);
 		add(descriptionPanel);
+		add(ok);
 		setSize(200, 300);
 		setVisible(true);
 	}
