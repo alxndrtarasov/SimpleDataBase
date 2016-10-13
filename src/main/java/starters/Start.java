@@ -1,7 +1,9 @@
-package bdvisualisation;
+package starters;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import bdvisualisation.MainMenu;
 
 public class Start {
 	@SuppressWarnings({ "unused", "resource" })

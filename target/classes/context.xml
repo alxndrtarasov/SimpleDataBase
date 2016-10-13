@@ -33,7 +33,7 @@
 		<property name="worker" ref="worker" />
 	</bean>
 	<bean id="importer" class="bd.imp.SimpleImporter">
-		
+		<property name="worker" ref="worker" />
 	</bean>
 	
 	<bean id="openner" class="bdvisualisation.SimpleBDOpenner">

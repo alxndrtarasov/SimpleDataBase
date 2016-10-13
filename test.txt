@@ -1,0 +1,22 @@
+﻿Для одинаковых элементов:
+оценка добавления: для 100 элементов -  fastest=5 slowest=31 average=15
+оценка поиска: для 100 элементов - fastest=0 slowest=2 average=0
+оценка удаления: для 100 элементов - fastest=5 slowest=77 average=10
+оценка добавления: для 1000 элементов -  fastest=5 slowest=1788 average=48
+оценка поиска: для 1000 элементов - fastest=0 slowest=3 average=0
+оценка удаления: для 1000 элементов - fastest=10 slowest=189 average=20
+оценка добавления: для 10000 элементов -  fastest=15 slowest=250 average=24
+оценка поиска: для 10000 элементов - fastest=0 slowest=11 average=0
+оценка удаления: для 10000 элементов - fastest=11 slowest=705 average=156
+
+Для разных элементов:
+
+оценка добавления: для 100 элементов -  fastest=11 slowest=61 average=16
+оценка поиска: для 100 элементов - fastest=0 slowest=7 average=0
+оценка удаления: для 100 элементов - fastest=8 slowest=63 average=13
+оценка добавления: для 1000 элементов -  fastest=13 slowest=105 average=21
+оценка поиска: для 1000 элементов - fastest=0 slowest=5 average=0
+оценка удаления: для 1000 элементов - fastest=12 slowest=232 average=19
+оценка добавления: для 10000 элементов -  fastest=15 slowest=185 average=24
+оценка поиска: для 10000 элементов - fastest=0 slowest=55 average=0
+оценка удаления: для 10000 элементов - fastest=12 slowest=250 average=29
