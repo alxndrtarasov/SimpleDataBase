@@ -37,6 +37,8 @@ public class SimpleFinder implements Finder {
 		} catch (IOException | ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (Exception e) {
+			System.out.println("no objs");
 		}
 		return null;
 	}

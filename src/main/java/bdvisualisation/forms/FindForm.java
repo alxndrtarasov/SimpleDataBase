@@ -54,6 +54,7 @@ public class FindForm extends JFrame {
 					findResult.add(
 							new ContentTable(worker.find((String) fieldChooser.getSelectedItem(), input.getText())));
 				}
+				findResult.setSize(400, 400);
 				findResult.setVisible(true);
 			}
 		});

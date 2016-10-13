@@ -47,10 +47,10 @@ public class MainMenu extends JFrame {
 	MainMenu() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(300, 200);
-		setLayout(new GridLayout(4, 1));
+		setLayout(new GridLayout(1, 1));
 		JLabel label = new JLabel("Enter path to DataBase here:");
 		JTextField bdPath = new JTextField();
-		JButton defStart = new JButton("Start default DB");
+		JButton defStart = new JButton("Start DB");
 		defStart.addActionListener(new ActionListener() {
 
 			@Override
@@ -97,9 +97,9 @@ public class MainMenu extends JFrame {
 			}
 
 		});
-		add(label);
-		add(bdPath);
-		add(start);
+		// add(label);
+		// add(bdPath);
+		// add(start);
 		add(defStart);
 		setVisible(true);
 	}
