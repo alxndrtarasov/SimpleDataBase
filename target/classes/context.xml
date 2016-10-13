@@ -4,21 +4,41 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 	<bean id="mainMenu" class="bdvisualisation.MainMenu">
 		<property name="defDbPath" value="db.txt" />
-		<property name="openner" ref = "openner"></property>
+		<property name="hashSize" value="100" />
+		<property name="openner" ref="openner"></property>
 	</bean>
 	<bean id="worker" class="bd.SimpleBDWorker">
-		 <constructor-arg value="db.txt"/>
-		 <property name="adder" ref = "adder" />
-		 <property name = "backuper" ref = "backuper"/>
+		<constructor-arg value="db.txt" />
+		<property name="adder" ref="adder" />
+		<property name="backuper" ref="backuper" />
+		<property name="deleter" ref="deleter" />
+		<property name="changer" ref="changer" />
+		<property name="finder" ref="finder" />
+		<property name="importer" ref="importer" />
+		<property name="colSize" value ="100"></property>
 	</bean>
 	<bean id="visualizator" class="bdvisualisation.SelectionListenerBDVisualizator">
-		 <constructor-arg ref="worker"/>
+		<constructor-arg ref="worker" />
 	</bean>
 	<bean id="adder" class="bd.add.SimpleAdder">
+		<property name="worker" ref="worker" />
 	</bean>
+	<bean id="deleter" class="bd.delete.SimpleDeleter">
+		<property name="worker" ref="worker" />
+	</bean>
+	<bean id="finder" class="bd.find.SimpleFinder">
+		<property name="worker" ref="worker" />
+	</bean>
+	<bean id="changer" class="bd.change.SimpleChanger">
+		<property name="worker" ref="worker" />
+	</bean>
+	<bean id="importer" class="bd.imp.SimpleImporter">
+		
+	</bean>
+	
 	<bean id="openner" class="bdvisualisation.SimpleBDOpenner">
 		<property name="visualizator" ref="visualizator"></property>
 	</bean>
-	<bean id = "backuper" class = "bd.backup.SimpleBackuper"></bean>
+	<bean id="backuper" class="bd.backup.SimpleBackuper"></bean>
 
 </beans>

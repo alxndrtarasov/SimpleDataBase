@@ -26,6 +26,15 @@ public class MainMenu extends JFrame {
 
 	private String defDbPath;
 	private BDOpenner openner;
+	private int hashSize;
+
+	public int getHashSize() {
+		return hashSize;
+	}
+
+	public void setHashSize(int hashSize) {
+		this.hashSize = hashSize;
+	}
 
 	public BDOpenner getOpenner() {
 		return openner;
@@ -48,6 +57,32 @@ public class MainMenu extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				JFrame baseFrame = openner.open();
 				baseFrame.setVisible(true);
+				// try {
+				// FileWriter fwId = new FileWriter(new File("ids_" +
+				// defDbPath));
+				// for (int i = 0; i < hashSize; i++) {
+				// fwId.write(i + ">>\n");
+				// }
+				// FileWriter fw1 = new FileWriter(new File("1" + defDbPath));
+				// for (int i = 0; i < hashSize; i++) {
+				// fw1.write(i + ">>\n");
+				// }
+				// FileWriter fw2 = new FileWriter(new File("2" + defDbPath));
+				// for (int i = 0; i < hashSize; i++) {
+				// fw2.write(i + ">>\n");
+				// }
+				// FileWriter fw3 = new FileWriter(new File("3" + defDbPath));
+				// for (int i = 0; i < hashSize; i++) {
+				// fw3.write(i + ">>\n");
+				// }
+				// fwId.close();
+				// fw1.close();
+				// fw2.close();
+				// fw3.close();
+				// } catch (IOException e) {
+				// // TODO Auto-generated catch block
+				// e.printStackTrace();
+				// }
 			}
 
 		});

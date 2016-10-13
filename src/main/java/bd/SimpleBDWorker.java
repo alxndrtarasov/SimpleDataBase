@@ -4,10 +4,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import bd.add.Adder;
@@ -30,6 +33,53 @@ public class SimpleBDWorker implements BDWorker {
 	private Finder finder;
 	private Backuper backuper;
 	private Importer importer;
+	private HashMap<String, String> idHash = new HashMap<>();
+	private HashMap<String, String> hash1 = new HashMap<>();
+	private HashMap<String, String> hash2 = new HashMap<>();
+	private HashMap<String, String> hash3 = new HashMap<>();
+	private int colSize;
+	public RandomAccessFile db;
+	public RandomAccessFile db1;
+	public RandomAccessFile db2;
+	public RandomAccessFile db3;
+	public RandomAccessFile dbId;
+	SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+
+	public void rewriteHash() {
+		try {
+			FileWriter idWriter = new FileWriter("ids_" + fileName);
+			for (String currentKey : idHash.keySet()) {
+				idWriter.write(currentKey + ">>" + idHash.get(currentKey) + "\n");
+			}
+			idWriter.close();
+
+			FileWriter writer1 = new FileWriter("1" + fileName);
+			for (String currentKey : hash1.keySet()) {
+				writer1.write(currentKey + ">>" + hash1.get(currentKey) + "\n");
+			}
+			writer1.close();
+
+			FileWriter writer2 = new FileWriter("2" + fileName);
+			for (String currentKey : hash2.keySet()) {
+				writer2.write(currentKey + ">>" + hash2.get(currentKey) + "\n");
+			}
+			writer2.close();
+
+			FileWriter writer3 = new FileWriter("3" + fileName);
+			for (String currentKey : hash3.keySet()) {
+				writer3.write(currentKey + ">>" + hash3.get(currentKey) + "\n");
+			}
+
+			writer3.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public SimpleDateFormat getDf() {
+		return df;
+	}
 
 	public Deleter getDeleter() {
 		return deleter;
@@ -82,7 +132,87 @@ public class SimpleBDWorker implements BDWorker {
 
 	public SimpleBDWorker(String fileName) {
 		this.fileName = fileName;
+		try {
+			// FileWriter fwId = new FileWriter(new File("ids_" + fileName));
+			// for (int i = 0; i < 100/* hashSize */; i++) {
+			// fwId.write(i + ">>\n");
+			// }
+			// FileWriter fw1 = new FileWriter(new File("1" + fileName));
+			// for (int i = 0; i < 100/* hashSize */; i++) {
+			// fw1.write(i + ">>\n");
+			// }
+			// FileWriter fw2 = new FileWriter(new File("2" + fileName));
+			// for (int i = 0; i < 100/* hashSize */; i++) {
+			// fw2.write(i + ">>\n");
+			// }
+			// FileWriter fw3 = new FileWriter(new File("3" + fileName));
+			// for (int i = 0; i < 100/* hashSize */; i++) {
+			// fw3.write(i + ">>\n");
+			// }
+			// fwId.close();
+			// fw1.close();
+			// fw2.close();
+			// fw3.close();
+			db = new RandomAccessFile(fileName, "rw");
+			dbId = new RandomAccessFile("ids_" + fileName, "rw");
+			db1 = new RandomAccessFile("1" + fileName, "rw");
+			db2 = new RandomAccessFile("2" + fileName, "rw");
+			db3 = new RandomAccessFile("3" + fileName, "rw");
+			BufferedReader idReader = new BufferedReader(new FileReader("ids_" + fileName));
+			String line = "";
+			while ((line = idReader.readLine()) != null) {
+				if (line.split(">>").length > 1) {
+					idHash.put(line.split(">>")[0], line.split(">>")[1]);
+				}
+			}
+			idReader.close();
 
+			BufferedReader firstReader = new BufferedReader(new FileReader("1" + fileName));
+			while ((line = firstReader.readLine()) != null) {
+				if (line.split(">>").length > 1) {
+					hash1.put(line.split(">>")[0], line.split(">>")[1]);
+				}
+			}
+			firstReader.close();
+
+			BufferedReader secondReader = new BufferedReader(new FileReader("2" + fileName));
+			while ((line = secondReader.readLine()) != null) {
+				if (line.split(">>").length > 1) {
+					hash2.put(line.split(">>")[0], line.split(">>")[1]);
+				}
+			}
+			secondReader.close();
+
+			BufferedReader thirdReader = new BufferedReader(new FileReader("3" + fileName));
+			while ((line = thirdReader.readLine()) != null) {
+				if (line.split(">>").length > 1) {
+					hash3.put(line.split(">>")[0], line.split(">>")[1]);
+				}
+			}
+			thirdReader.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("No such file");
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public HashMap<String, String> getIdHash() {
+		return idHash;
+	}
+
+	public HashMap<String, String> getHash1() {
+		return hash1;
+	}
+
+	public HashMap<String, String> getHash2() {
+		return hash2;
+	}
+
+	public HashMap<String, String> getHash3() {
+		return hash3;
 	}
 
 	@Override
@@ -96,14 +226,19 @@ public class SimpleBDWorker implements BDWorker {
 	@Override
 	public List<Obj> getAllObjects() {
 		allObjects = new ArrayList<>();
-		SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(new File(fileName)));
 			String line;
+			lastId = 0;
 			while ((line = reader.readLine()) != null) {
+				lastId++;
 				String[] inlineData = line.split(";");
-				Obj o = new Obj(Integer.parseInt(inlineData[0]), inlineData[1], df.parse(inlineData[2]), inlineData[3]);
-				allObjects.add(o);
+				if (inlineData.length > 1) {
+					Obj o = new Obj(inlineData[0].trim(), inlineData[1].trim(), df.parse(inlineData[2].trim()),
+							inlineData[3].trim());
+					allObjects.add(o);
+				}
 			}
 			reader.close();
 		} catch (FileNotFoundException e) {
@@ -112,20 +247,17 @@ public class SimpleBDWorker implements BDWorker {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		lastId = allObjects.isEmpty() ? 0 : allObjects.get(allObjects.size() - 1).getId();
 		return allObjects;
 	}
 
 	@Override
 	public void add(Obj o) {
 		adder.add(o, fileName);
+		lastId++;
 	}
 
 	@Override
@@ -179,6 +311,14 @@ public class SimpleBDWorker implements BDWorker {
 	@Override
 	public List<Obj> find(String fieldName, String field) throws NotFoundException {
 		return finder.find(fieldName, field, fileName);
+	}
+
+	public int getColSize() {
+		return colSize;
+	}
+
+	public void setColSize(int colSize) {
+		this.colSize = colSize;
 	}
 
 }

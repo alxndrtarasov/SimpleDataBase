@@ -4,28 +4,17 @@ import java.util.Date;
 
 public class Obj {
 
-	private int id;
+	private String id;
 	private String name;
 	private Date date;
 	private String description;
 
-	public Obj(int id, String name, Date date, String description) {
+	public Obj(String id, String name, Date date, String description) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.date = date;
 		this.description = description;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((date == null) ? 0 : date.hashCode());
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + id;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
 	}
 
 	@Override
@@ -62,7 +51,7 @@ public class Obj {
 		return "Obj [id=" + id + ", name=" + name + ", date=" + date + ", description=" + description + "]";
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 

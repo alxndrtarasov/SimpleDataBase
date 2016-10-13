@@ -73,7 +73,7 @@ public class ChangeForm extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					Obj currentObj = worker.findById(Integer.parseInt(id.getText()));
-					currentId = currentObj.getId();
+					currentId = Integer.parseInt(currentObj.getId());
 					name.setEditable(true);
 					date.setEnabled(true);
 					description.setEnabled(true);

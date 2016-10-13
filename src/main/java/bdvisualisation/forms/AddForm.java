@@ -44,7 +44,8 @@ public class AddForm extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 				try {
-					worker.add(new Obj(worker.getLastId() + 1, name.getText(), df.parse(df.format(date.getDate())),
+					int id = (worker.getLastId() + 1);
+					worker.add(new Obj("" + id, name.getText(), df.parse(df.format(date.getDate())),
 							description.getSelectedItem().toString()));
 				} catch (ParseException e1) {
 					// TODO Auto-generated catch block
