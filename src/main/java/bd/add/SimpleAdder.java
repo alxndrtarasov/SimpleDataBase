@@ -30,40 +30,44 @@ public class SimpleAdder implements Adder {
 			sw.close();
 
 			HashMap<String, String> hash1 = ((SimpleBDWorker) worker).getHash1();
-			String val = hash1.get("" + Math.abs(o.getName().hashCode() % 100)/* hashSize */);
+			String key = "" + Math.abs(o.getName().hashCode() % 100)/* hashSize */;
+			String val = hash1.get(key);
 			if (val != null) {
 				val += o.getId() + ";";
 			} else {
 				val = o.getId() + ";";
 			}
-			hash1.put("" + (Math.abs(o.getName().hashCode() % 100)/* hashSize */), val);
+			hash1.put(key, val);
 
 			HashMap<String, String> hash2 = ((SimpleBDWorker) worker).getHash2();
-			val = hash2.get("" + Math.abs(o.getDate().hashCode() % 100)/* hashSize */);
+			key = "" + Math.abs(((SimpleBDWorker) worker).df.format(o.getDate()).hashCode() % 100)/* hashSize */;
+			val = hash2.get(key);
 			if (val != null) {
 				val += o.getId() + ";";
 			} else {
 				val = o.getId() + ";";
 			}
-			hash2.put("" + (Math.abs(o.getDate().hashCode() % 100)/* hashSize */), val);
+			hash2.put(key, val);
 
 			HashMap<String, String> hash3 = ((SimpleBDWorker) worker).getHash3();
-			val = hash3.get("" + Math.abs(o.getDescription().hashCode() % 100)/* hashSize */);
+			key = "" + Math.abs(o.getDescription().hashCode() % 100)/* hashSize */;
+			val = hash3.get(key);
 			if (val != null) {
 				val += o.getId() + ";";
 			} else {
 				val = o.getId() + ";";
 			}
-			hash3.put("" + (Math.abs(o.getDescription().hashCode() % 100)/* hashSize */), val);
+			hash3.put(key, val);
 
 			HashMap<String, String> hashId = ((SimpleBDWorker) worker).getIdHash();
-			val = hashId.get("" + Math.abs(Integer.parseInt(o.getId()) % 100)/* hashSize */);
+			key = "" + Math.abs(Integer.parseInt(o.getId()) % 100)/* hashSize */;
+			val = hashId.get(key);
 			if (val != null) {
 				val += o.getId() + ";";
 			} else {
 				val = o.getId() + ";";
 			}
-			hashId.put("" + Math.abs(Integer.parseInt(o.getId()) % 100), val);
+			hashId.put(key, val);
 
 			((SimpleBDWorker) worker).rewriteHash();
 		} catch (Exception e) {

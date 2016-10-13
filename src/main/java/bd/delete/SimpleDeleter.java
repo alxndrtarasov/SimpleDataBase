@@ -45,35 +45,54 @@ public class SimpleDeleter implements Deleter {
 					try {
 						reader.seek((id - 1) * (4 * ((SimpleBDWorker) worker).getColSize() + 1));
 						String line = reader.readLine();
+						System.out.println(line);
 						reader.seek((id - 1) * (4 * ((SimpleBDWorker) worker).getColSize() + 1));
 						reader.writeBytes(String.format("%-400s", ""));
 						String[] inlineData = line.split(";");
 						Obj o = new Obj(inlineData[0].trim(), inlineData[1].trim(),
 								((SimpleBDWorker) worker).getDf().parse(inlineData[2].trim()), inlineData[3].trim());
-						String value = hash1.get("" + (Math.abs(o.getName().hashCode() % 100)/* hashSize */));
-						System.out.println(value);
-						value = value.replaceAll(">>" + id + ";", ">>");
-						value = value.replaceAll(";" + id + ";", ";");
-						hash1.put("" + (Math.abs(o.getName().hashCode() % 100)/* hashSize */), value);
-						System.out.println(hash1.get("" + Math.abs(o.getName().hashCode() % 100)));
-						value = hash2.get("" + Math.abs(o.getDate().hashCode() % 100)/* hashSize */);
-						System.out.println(value);
-						value = value.replaceAll(">>" + id + ";", ">>");
-						value = value.replaceAll(";" + id + ";", ";");
-						hash2.put("" + Math.abs(o.getDate().hashCode() % 100)/* hashSize */, value);
-						System.out.println(hash2.get("" + Math.abs(o.getDate().hashCode() % 100)));
-						value = hash3.get("" + (Math.abs(o.getDescription().hashCode() % 100)/* hashSize */));
-						System.out.println(value);
-						value = value.replaceAll(">>" + id + ";", ">>");
-						value = value.replaceAll(";" + id + ";", ";");
-						hash3.put("" + (Math.abs(o.getDescription().hashCode() % 100)/* hashSize */), value);
-						System.out.println(hash3.get("" + Math.abs(o.getDescription().hashCode() % 100)));
-						value = idHash.get("" + Math.abs(Integer.parseInt(o.getId()) % 100)/* hashSize */);
-						System.out.println(value);
-						value = value.replaceAll(">>" + id + ";", ">>");
-						value = value.replaceAll(";" + id + ";", ";");
-						idHash.put("" + Math.abs(Integer.parseInt(o.getId()) % 100)/* hashSize */, value);
-						System.out.println(idHash.get("" + Math.abs(Integer.parseInt(o.getId()) % 100)/* hashSize */));
+
+						String key = "" + Math.abs(o.getName().hashCode() % 100)/* hashSize */;
+						String value = hash1.get(key);
+						System.out.println("was " + value);
+						if (value.startsWith(id + ";")) {
+							value = value.replaceFirst(id + ";", "");
+						} else {
+							value = value.replaceAll(";" + id + ";", ";");
+						}
+						hash1.put(key, value);
+						System.out.println("became " + hash1.get(key));
+						key = "" + Math
+								.abs(((SimpleBDWorker) worker).df.format(o.getDate()).hashCode() % 100)/* hashSize */;
+						value = hash2.get(key);
+						System.out.println("was " + value);
+						if (value.startsWith(id + ";")) {
+							value = value.replaceFirst(id + ";", "");
+						} else {
+							value = value.replaceAll(";" + id + ";", ";");
+						}
+						hash2.put(key, value);
+						System.out.println("became " + hash2.get(key));
+						key = "" + Math.abs(o.getDescription().hashCode() % 100)/* hashSize */;
+						value = hash3.get(key);
+						System.out.println("was " + value);
+						if (value.startsWith(id + ";")) {
+							value = value.replaceFirst(id + ";", "");
+						} else {
+							value = value.replaceAll(";" + id + ";", ";");
+						}
+						hash3.put(key, value);
+						System.out.println("became " + hash3.get(key));
+						key = "" + Math.abs(Integer.parseInt(o.getId()) % 100)/* hashSize */;
+						value = idHash.get(key);
+						System.out.println("was " + value);
+						if (value.startsWith(id + ";")) {
+							value = value.replaceFirst(id + ";", "");
+						} else {
+							value = value.replaceAll(";" + id + ";", ";");
+						}
+						idHash.put(key, value);
+						System.out.println("became " + idHash.get(key));
 						((SimpleBDWorker) worker).rewriteHash();
 						return o;
 
@@ -82,7 +101,6 @@ public class SimpleDeleter implements Deleter {
 						e.printStackTrace();
 					}
 					;
-
 				}
 			}
 		}

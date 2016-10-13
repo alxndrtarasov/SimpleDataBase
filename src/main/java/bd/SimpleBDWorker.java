@@ -43,7 +43,7 @@ public class SimpleBDWorker implements BDWorker {
 	public RandomAccessFile db2;
 	public RandomAccessFile db3;
 	public RandomAccessFile dbId;
-	SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+	public SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 
 	public void rewriteHash() {
 		try {
