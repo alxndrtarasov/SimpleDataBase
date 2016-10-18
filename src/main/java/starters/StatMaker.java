@@ -33,74 +33,96 @@ public class StatMaker {
 		BDWorker worker = (BDWorker) context.getBean("worker");
 		SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 		Random random = new Random();
-		int n = 10000;
+		int k = 10;
+		int n = 100;
 		long fastest = Long.MAX_VALUE;
 		long slowest = 0;
-		long sum = 0;
-		for (int i = 1; i < n; i++) {
-			int id = (worker.getLastId() + 1);
-			Date date = new Date(random.nextLong());
-			String name = randomString(10);
-			String descr;
-			if (i % 2 == 0) {
-				descr = "Fruit";
-			} else {
-				descr = "Vegetable";
+		long sumk = 0;
+		long sumn = 0;
+		for (int j = 0; j < k; j++) {
+			for (int i = 1; i < n; i++) {
+				int id = (worker.getLastId() + 1);
+				Date date = new Date(random.nextLong());
+				String name = randomString(10);
+				String descr;
+				if (i % 2 == 0) {
+					descr = "Fruit";
+				} else {
+					descr = "Vegetable";
+				}
+				long start = System.currentTimeMillis();
+				worker.add(new Obj("" + id, name, date, descr));
+				long finish = System.currentTimeMillis();
+				long time = finish - start;
+				if (time < fastest) {
+					fastest = time;
+				}
+				if (time > slowest) {
+					slowest = time;
+				}
+				sumn += time;
 			}
-			long start = System.currentTimeMillis();
-			worker.add(new Obj("" + id, name, date, descr));
-			long finish = System.currentTimeMillis();
-			long time = finish - start;
-			if (time < fastest) {
-				fastest = time;
-			}
-			if (time > slowest) {
-				slowest = time;
-			}
-			sum += time;
+			sumk += sumn / n;
+			fastest = Long.MAX_VALUE;
+			slowest = 0;
+			sumn = 0;
 		}
 		writer.write("оценка добавления: для " + n + " элементов - " + " fastest=" + fastest + " slowest=" + slowest
-				+ " average=" + sum / n);
+				+ " average=" + sumk / k);
 		writer.newLine();
 
 		fastest = Long.MAX_VALUE;
 		slowest = 0;
-		sum = 0;
-		for (int i = 1; i < n; i++) {
-			long start = System.currentTimeMillis();
-			worker.findById(i);
-			long finish = System.currentTimeMillis();
-			long time = finish - start;
-			if (time < fastest) {
-				fastest = time;
+		sumn = 0;
+		sumk = 0;
+		for (int j = 0; j < k; j++) {
+			for (int i = 1; i < n; i++) {
+				long start = System.currentTimeMillis();
+				worker.findById(i);
+				long finish = System.currentTimeMillis();
+				long time = finish - start;
+				if (time < fastest) {
+					fastest = time;
+				}
+				if (time > slowest) {
+					slowest = time;
+				}
+				sumn += time;
 			}
-			if (time > slowest) {
-				slowest = time;
-			}
-			sum += time;
+			sumk += sumn / n;
+			fastest = Long.MAX_VALUE;
+			slowest = 0;
+			sumn = 0;
 		}
 		writer.write("оценка поиска: для " + n + " элементов - " + "fastest=" + fastest + " slowest=" + slowest
-				+ " average=" + sum / n);
+				+ " average=" + sumk / k);
 		writer.newLine();
 
 		fastest = Long.MAX_VALUE;
 		slowest = 0;
-		sum = 0;
-		for (int i = 1; i < n; i++) {
-			long start = System.currentTimeMillis();
-			worker.deleteById(i);
-			long finish = System.currentTimeMillis();
-			long time = finish - start;
-			if (time < fastest) {
-				fastest = time;
+		sumn = 0;
+		sumk = 0;
+		for (int j = 0; j < k; j++) {
+			for (int i = 1; i < n; i++) {
+				long start = System.currentTimeMillis();
+				worker.deleteById(i);
+				long finish = System.currentTimeMillis();
+				long time = finish - start;
+				if (time < fastest) {
+					fastest = time;
+				}
+				if (time > slowest) {
+					slowest = time;
+				}
+				sumn += time;
 			}
-			if (time > slowest) {
-				slowest = time;
-			}
-			sum += time;
+			sumk += sumn / n;
+			fastest = Long.MAX_VALUE;
+			slowest = 0;
+			sumn = 0;
 		}
 		writer.write("оценка удаления: для " + n + " элементов - " + "fastest=" + fastest + " slowest=" + slowest
-				+ " average=" + sum / n);
+				+ " average=" + sumk / k);
 		writer.newLine();
 		writer.close();
 	}

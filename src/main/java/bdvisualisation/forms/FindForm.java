@@ -28,6 +28,8 @@ public class FindForm extends JFrame {
 		JLabel inputLabel = new JLabel("Input:");
 		JLabel fieldLabel = new JLabel("Field:");
 
+		findResult.setSize(400, 400);
+
 		JComboBox<String> fieldChooser = new JComboBox<>();
 
 		fieldChooser.addItem("id");
@@ -46,16 +48,22 @@ public class FindForm extends JFrame {
 					List<Obj> objs = new ArrayList<>();
 					try {
 						objs.add(worker.findById(Integer.parseInt(input.getText())));
+						findResult.add(new ContentTable(objs));
+						findResult.setVisible(true);
 					} catch (NumberFormatException e1) {
 						input.setText("Wrong id format");
+					} catch (Exception e2) {
+						input.setText("Not found");
 					}
-					findResult.add(new ContentTable(objs));
 				} else {
-					findResult.add(
-							new ContentTable(worker.find((String) fieldChooser.getSelectedItem(), input.getText())));
+					try {
+						findResult.add(new ContentTable(
+								worker.find((String) fieldChooser.getSelectedItem(), input.getText())));
+						findResult.setVisible(true);
+					} catch (Exception e2) {
+						input.setText("Not found");
+					}
 				}
-				findResult.setSize(400, 400);
-				findResult.setVisible(true);
 			}
 		});
 

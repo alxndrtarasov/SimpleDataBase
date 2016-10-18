@@ -8,9 +8,10 @@ import java.text.SimpleDateFormat;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
+import javax.swing.text.MaskFormatter;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -30,7 +31,14 @@ public class AddForm extends JFrame {
 		JLabel dateLabel = new JLabel("date:");
 		JLabel descriptionLabel = new JLabel("description:");
 
-		JTextField name = new JTextField();
+		MaskFormatter formatter = null;
+		try {
+			formatter = new MaskFormatter("[ABCDEFGHIJKLMNOPQRSTUVWXYZ]{0,99}");
+		} catch (ParseException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		JFormattedTextField name = new JFormattedTextField(formatter);
 		JDateChooser date = new JDateChooser();
 		JComboBox<String> description = new JComboBox<>();
 

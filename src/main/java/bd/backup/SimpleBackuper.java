@@ -11,8 +11,10 @@ public class SimpleBackuper implements Backuper {
 	@Override
 	public void backup(String fileName, String DBFileName) {
 		try {
+			File backup = new File(fileName);
+			backup.createNewFile();
 			BufferedReader br = new BufferedReader(new FileReader(new File(DBFileName)));
-			BufferedWriter bw = new BufferedWriter(new FileWriter(new File(fileName)));
+			BufferedWriter bw = new BufferedWriter(new FileWriter(backup));
 			String strRead = null;
 			while ((strRead = br.readLine()) != null) {
 				bw.write(strRead);
